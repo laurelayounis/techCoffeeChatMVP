@@ -180,22 +180,21 @@ app.get('/users', async (req, res) => {
 
 
 
-//Get all the interest Users in the database   GET  //need to update *********************
-app.get('/interest-users', async(req, res) => {
-    const client= new MongoClient(uri)
-    /*********need to change to interests   plural??? **///
-    const interests= req.query.interests  ///need to make .interests plural?
-    console.log('interests', interests)
+// Get all the Gendered Users in the Database                 //    
 
-    try{
+app.get('/interested-users', async (req, res) => {
+    const client = new MongoClient(uri)
+    const interested = req.query.interested
+
+    try {
         await client.connect()
-        const database= client.db('app-data')
-        const users= database.collection('users')
-        const query= {offer: {$eq:interests}}                     ///////////////////////
-        const foundUsers= await users.find(query).toArray()
-        /***need to change .send to .json??? */
-        res.send(foundUsers)
-    }finally{
+        const database = client.db('app-data')
+        const users = database.collection('users')
+        const query = {offer: {$eq: interested}}
+        const foundUsers = await users.find(query).toArray()
+        res.json(foundUsers)
+
+    } finally {
         await client.close()
     }
 })
@@ -219,8 +218,8 @@ app.put('/user', async (req, res) => {
                 dob_month: formData.dob_month,
                 dob_year: formData.dob_year,
                 show_gender: formData.show_gender,
-                offer: formData.offer,  //update this ////////////
-                interest: formData.interest,                //update this //////////////
+                offer: formData.offer,  
+                interest: formData.interest,                
                 url: formData.url,
                 about: formData.about,
                 matches: formData.matches

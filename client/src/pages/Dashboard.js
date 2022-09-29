@@ -1,119 +1,98 @@
 import TinderCard from 'react-tinder-card'
-import { useEffect, useState } from "react"
-import { useCookies } from 'react-cookie'
+import {useEffect, useState} from 'react'
 import ChatContainer from '../components/ChatContainer'
+import {useCookies} from 'react-cookie'
 import axios from 'axios'
 
-
 const Dashboard = () => {
-  const [user, setUser] = useState(null)
+    const [user, setUser] = useState(null)
+    const [interestedUsers, setInterestedUsers] = useState(null)         //   interestedUsers setInterestedUsers
+    const [lastDirection, setLastDirection] = useState()
+    const [cookies, setCookie, removeCookie] = useCookies(['user'])
 
-  const [interestUsers, setInterestUsers] = useState(null)
-
-
-  const [lastDirection, setLastDirection] = useState()
-  const [cookies] = useCookies(['user'])
-
-  const userId = cookies.UserId
-
-const getUser= async () => {
-  try{
-    const response= await axios.get('http://localhost:8000/user', {
-      params:{userId}
-    })
-    //save the state
-    setUser(response.data)
-  } catch(error){
-    console.log(error)
-  }
-}
+    const userId = cookies.UserId
 
 
-//matching ppl together based on their interest -- need to debug  useEffect/////////////////////////////////////
-const getInterestUsers= async () => {
-  try{
-    const response= await axios.get('http://localhost:8000/interest-users', {   
-      ////*********************************************************************need to change interest to interests & change it everywhere else */
-        
-      /**replaced gender with interests make sure its plural need to modify on server index.js */  
-      params: {interests: user?.interest}                                    
-    })
-    setInterestUsers(response.data)                                             
-  }catch (error){
-    console.log(error)
-  }
-}
-
-
-//anytime the user changes this function will be called
-useEffect(() => {
-  getUser()
-                                   
-}, [])
-
-useEffect(() => {
-  if(user){
-      //matching on interest
-  getInterestUsers() 
-  }
-}, [user])
-
-//console.log('user', user)
-//console.log('interest user', interestUsers)
-
-   
-const updateMatches= async (matchedUserId) => {
-  try{
-    await axios.put('http://localhost:8000/addmatch', {
-      userId,
-      matchedUserId
-    })
-    getUser()
-  }catch(err){
-    console.log(err)
-  }
-}
-
-
-
-
-const swiped = (direction, swipedUserId) => {
-    if(direction === 'right'){
-      updateMatches(swipedUserId)
+    const getUser = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/user', {
+                params: {userId}
+            })
+            setUser(response.data)
+        } catch (error) {
+            console.log(error)
+        }
     }
-    setLastDirection(direction)
-  }
+    const getInterestedUsers = async () => {
+        try {
+            const response = await axios.get('http://localhost:8000/interested-users', {
+                params: {interested: user?.interest}
+            })
+            setInterestedUsers(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
-const outOfFrame = (name) => {
-console.log(name + ' left the screen!')
-  }
+    useEffect(() => {
+        getUser()
 
-  const matchedUserIds = user?.matches.map(({user_id}) => user_id).concat(userId)
-  
-  ///////////
-  const filteredInterestUsers = interestUsers?.filter(
-    interestUser => !matchedUserIds.includes(interestUser.user_id)
-  )
+    }, [])
 
-  return (
+    useEffect(() => {
+        if (user) {
+            getInterestedUsers()
+        }
+    }, [user])
 
-    <>
-    { user &&
-      <div className="dashboard">
-        <ChatContainer user={user}/> 
-           <div className="swipe-container">
-            <div className="card-container" >
+    const updateMatches = async (matchedUserId) => {
+        try {
+            await axios.put('http://localhost:8000/addmatch', {
+                userId,
+                matchedUserId
+            })
+            getUser()
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
-               {filteredInterestUsers?.map((interestUser) =>
+
+    const swiped = (direction, swipedUserId) => {
+        if (direction === 'right') {
+            updateMatches(swipedUserId)
+        }
+        setLastDirection(direction)
+    }
+
+    const outOfFrame = (name) => {
+        console.log(name + ' left the screen!')
+    }
+
+    const matchedUserIds = user?.matches.map(({user_id}) => user_id).concat(userId)
+
+    const filteredInterestedUsers = interestedUsers?.filter(interestedUser => !matchedUserIds.includes(interestedUser.user_id))
+
+
+    console.log('filteredInterestedUsers ', filteredInterestedUsers)
+    return (
+        <>
+            {user &&
+            <div className="dashboard">
+                <ChatContainer user={user}/>
+                <div className="swipe-container">
+                    <div className="card-container">
+
+                        {filteredInterestedUsers?.map((interestedUser) =>
                             <TinderCard
                                 className="swipe"
-                                key={interestUser.user_id}
-                                onSwipe={(dir) => swiped(dir, interestUser.user_id)}
-                                onCardLeftScreen={() => outOfFrame(interestUser.first_name)}>
+                                key={interestedUser.user_id}
+                                onSwipe={(dir) => swiped(dir, interestedUser.user_id)}
+                                onCardLeftScreen={() => outOfFrame(interestedUser.first_name)}>
                                 <div
-                                    style={{backgroundImage: "url(" + interestUser.url + ")"}}
+                                    style={{backgroundImage: "url(" + interestedUser.url + ")"}}
                                     className="card">
-                                    <h3>{interestUser.first_name}</h3>
+                                    <h3>{interestedUser.first_name}</h3>
                                 </div>
                             </TinderCard>
                         )}
