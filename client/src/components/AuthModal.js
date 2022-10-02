@@ -23,7 +23,7 @@
         e.preventDefault()
 
         try {
-            if( isSignUp && (password !== confirmPassword)) {
+            if( isSignUp && (password !== confirmPassword)) {   
                 setError('Passwords need to match')
                 return
             }

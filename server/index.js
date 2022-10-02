@@ -29,13 +29,14 @@ app.get('/', (req, res) => {
 //sign up to the databse
 //POST:   send data POST request; how we're passing through data from the front end to the back end signup form
 app.post('/signup', async (req, res) => {
+
+    console.log("hello")
+    
     const client= new MongoClient(uri)
     const {email, password}= req.body
     //generate a unique user id using the uuid package
     const generatedUserId= uuidv4()
     const hashedPassword= await bcrypt.hash(password, 10)
-
-
 
     //send the data to the db
     try{
@@ -58,8 +59,6 @@ app.post('/signup', async (req, res) => {
             email: sanitizedEmail,
             hashed_password: hashedPassword
         }
-
-
 
         //insert our new users into the db
        const insertedUser= await users.insertOne(data)
@@ -181,7 +180,7 @@ app.get('/users', async (req, res) => {
 
 
 
-// Get all the Gendered Users in the Database                 //    
+// Get all the interests Users in the Database                 
 
 app.get('/interested-users', async (req, res) => {
     const client = new MongoClient(uri)
