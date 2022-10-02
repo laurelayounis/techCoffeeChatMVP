@@ -28,7 +28,7 @@
                 return
             }
                 //make POST request to db from sign up on __ pg
- const response = await axios.post(`http://localhost:8000/${isSignUp ? 'signup' : 'login'}`, { email, password })
+ const response = await axios.post(`/${isSignUp ? 'signup' : 'login'}`, { email, password })
 
     setCookie('AuthToken', response.data.token)
     setCookie('UserId', response.data.userId)

@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a385a7d0.css",
+    "main.js": "/static/js/main.de3be76c.js",
+    "static/media/backgroundConnect.jpg": "/static/media/backgroundConnect.143599d09611e8a7f806.jpg",
+    "static/media/redlogo.png": "/static/media/redlogo.5504ae41fcb3344c2b6d.png",
+    "static/media/blacklogo.png": "/static/media/blacklogo.c7345849ab571aaec629.png",
+    "index.html": "/index.html",
+    "main.a385a7d0.css.map": "/static/css/main.a385a7d0.css.map",
+    "main.de3be76c.js.map": "/static/js/main.de3be76c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a385a7d0.css",
+    "static/js/main.de3be76c.js"
+  ]
+}

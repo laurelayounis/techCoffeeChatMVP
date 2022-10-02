@@ -1,4 +1,4 @@
-const PORT= 8000
+const PORT = process.env.PORT || 8000  //updated port to use env
 const express= require('express')
 const {MongoClient}= require('mongodb')
 const {v4: uuidv4}= require('uuid')
@@ -18,7 +18,8 @@ app.use(express.json())
 
 
 
-//ROUTES
+//heroku route use static build
+app.use(express.static('build'))
 
 //DEFAULT
 app.get('/', (req, res) => {

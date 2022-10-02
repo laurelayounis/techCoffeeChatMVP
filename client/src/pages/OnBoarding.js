@@ -29,7 +29,7 @@ const OnBoarding= () =>{
         //prevent from reloading because its a form
         e.preventDefault()
         try {
-            const response= await axios.put('http://localhost:8000/user', {formData})
+            const response= await axios.put('/user', {formData})
             const success= response.status === 200
             if (success) navigate('/dashboard')
         } catch(err){
@@ -163,10 +163,10 @@ const OnBoarding= () =>{
                     <label>I'm offering to link up for:</label>
                     <div className="multiple-input-container">
                     <input
-                        id="offer-coffee"                                            //man-gender-identity        offer 
+                        id="offer-coffee"                                               
                         type="radio"
-                        name="offer"                                            //gender_identity           offer
-                        value="coffee chat"                                     //man                       coffee chat
+                        name="offer"                                                   
+                        value="coffee chat"                                                           
                         onChange={handleChange}
                         checked={formData.offer === 'coffee chat'}
                     /> 
