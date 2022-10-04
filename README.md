@@ -2,7 +2,7 @@
 
 Tech Coffee Chap is a full stack app built using the MERN stack. Users can create a profile, login with authentication, and then be matched with other users for tech coffee chats & conference buddies.
 
-![Animated overview]()
+![Animated overview](https://github.com/laurelayounis/techCoffeeChatMVP/blob/cf50d7afc3bc4be6efe3812d0b1b8cd61671cf2a/YES.gif)
 
 # ✨ Features
 
